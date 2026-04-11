@@ -1,35 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-int board[20];
+int n,target;
+int a[100];
+int x[100];
 
-bool isSafe(int row,int col) {
-    for(int i=0;i<row;i++) {
-        if (board[i] == col || abs(board[i] - col) == abs(i-row)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-
-void solve(int row) {
-    if(row == n) {
-        for(int i=0;i<n;i++) {
-            cout << board[i] <<endl;
+void subset(int k,int sum) {
+    if(sum==target) {
+        cout<<"Subset";
+        for(int i=0;i<k;i++) {
+            if(x[i] == 1) {
+                cout<<a[i];
+            }
         }
         return;
     }
-    for(int col=0;col<n;col++) {
-        if(isSafe(row,col)) {
-            board[row] = col;
-            solve(row+1);
-        }
+
+    if(k==n || sum > target) {
+        return;
     }
+
+    x[k] = 1;
+    subset(k+1,sum+a[k]);
+
+    x[k] = 0;
+    subset(k+1,sum);
 }
 
 int main() {
     cin>>n;
-    solve(0);
+
+    for(int i=0;i<n;i++) cin>>a[i];
+
+    cin>>target;
+
+    subset(0,0);
+    return 0;
 }
